@@ -20,7 +20,7 @@ app.use(morgan(':method :url :status :res[content-length] :response-time ms :bod
 app.use(cors());
 
 // fetch all persons
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (request, response, next) => {
   Person.find({})
     .then((result) => {
       response.json(result);
@@ -49,7 +49,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 app.delete('/api/persons/:id', (request, response, next) => {
   const id = request.params.id;
   Person.findByIdAndDelete(mongoose.Types.ObjectId(id))
-    .then((result) => {
+    .then(() => {
       response.status(204).end();
     })
     .catch((error) => next(error));
